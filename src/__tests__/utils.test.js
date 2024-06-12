@@ -3,7 +3,7 @@ const {
   processOperations,
   calculateCashOutCommissionNatural,
 } = require('../utils');
-const transactions = require('./transactions'); // Update with your actual file name
+const transactions = require('../__mock__/transactions'); // Update with your actual file name
 
 // Describe blocks work the same way in Jest
 describe('Commission Calculation Functions', () => {

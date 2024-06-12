@@ -8,5 +8,7 @@
   "parserOptions": {
     "ecmaVersion": 2021
   },
-  "rules": {}
+  "rules": {
+    "no-console": "off"
+  }
 }

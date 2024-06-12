@@ -1,6 +1,7 @@
 const {
   roundToCents,
   processOperations,
+  calculateCashOutCommissionNatural,
 } = require('../utils');
 const transactions = require('./transactions'); // Update with your actual file name
 
@@ -27,6 +28,23 @@ describe('Commission Calculation Functions', () => {
       expectedOutput.forEach((output, i) => {
         expect(results[i]).toEqual(output);
       });
+    });
+  });
+
+  describe('calculateCashOutCommissionNatural', () => {
+    it('should apply no commission if total weekly amount is below the free allowance', () => {
+      expect(calculateCashOutCommissionNatural(200, 300)).toBe(0);
+      expect(calculateCashOutCommissionNatural(500, 0)).toBe(0);
+    });
+
+    it('should apply commission to the full amount if weekly amount is already above the free allowance', () => {
+      expect(calculateCashOutCommissionNatural(200, 1200)).toBe(0.60);
+      expect(calculateCashOutCommissionNatural(500, 1500)).toBe(1.50);
+    });
+
+    it('should apply commission only to the amount exceeding the free allowance', () => {
+      expect(calculateCashOutCommissionNatural(500, 700)).toBe(0.6);
+      expect(calculateCashOutCommissionNatural(2000, 800)).toBe(5.4);
     });
   });
 });

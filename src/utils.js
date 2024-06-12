@@ -82,4 +82,5 @@ const processOperations = (operations) => {
 module.exports = {
   processOperations,
   roundToCents,
+  calculateCashOutCommissionNatural,
 };

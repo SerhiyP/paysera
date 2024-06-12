@@ -1,4 +1,3 @@
-```markdown
 # Paysera Commission Calculator
 
 This Node.js application calculates commission fees for Paysera transactions based on a provided JSON input file. The calculator handles both "cash in" and "cash out" operations for natural and legal persons, applying specific rules and weekly limits.
@@ -9,15 +8,6 @@ This Node.js application calculates commission fees for Paysera transactions bas
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/paysera.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd paysera
-   ```
-3. Install dependencies:
    ```bash
    npm install
    ```

@@ -1,6 +1,6 @@
-# Paysera Commission Calculator
+# Commission Calculator
 
-This Node.js application calculates commission fees for Paysera transactions based on a provided JSON input file. The calculator handles both "cash in" and "cash out" operations for natural and legal persons, applying specific rules and weekly limits.
+This Node.js application calculates commission fees for transactions based on a provided JSON input file. The calculator handles both "cash in" and "cash out" operations for natural and legal persons, applying specific rules and weekly limits.
 
 ## Requirements
 
@@ -74,4 +74,4 @@ npm test
 ## Code Structure
 
 - `app.js`: Contains the main application logic, including commission calculation functions and transaction processing.
-- `__tests__`: Contains the Jest test suite for the application.
+- `__tests__`: Contains the Jest test suite for the application. 

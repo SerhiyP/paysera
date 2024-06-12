@@ -4,7 +4,7 @@ This Node.js application calculates commission fees for transactions based on a 
 
 ## Requirements
 
-- Node.js (v14 or higher recommended)
+- Node.js (v18 or higher recommended)
 
 ## Installation
 

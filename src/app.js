@@ -1,5 +1,8 @@
 const fs = require('fs');
 
+// Function to round to the nearest cent (upper bound)
+const roundToCents = (amount) => Math.ceil(amount * 100) / 100;
+
 // Function to calculate cash in commission fee
 const calculateCashInCommission = (amount) => {
   const commissionFee = Math.min(0.0003 * amount, 5.00);
@@ -9,21 +12,18 @@ const calculateCashInCommission = (amount) => {
 // Function to calculate cash out commission fee for natural persons
 const calculateCashOutCommissionNatural = (amount, userWeeklyOperations) => {
   const commissionValue = 0.3 / 100;
-  let commissionFee = 0;
-  console.log('userWeeklyOperations >>', userWeeklyOperations)
+  const commissionFee = 0;
   const freeAmount = 1000.00; // Free allowance per week
 
-
-
   if (userWeeklyOperations + amount < freeAmount) {
-    return commissionFee
+    return commissionFee;
   }
 
   if (userWeeklyOperations > freeAmount) {
-    return roundToCents(amount * commissionValue)
+    return roundToCents(amount * commissionValue);
   }
 
-  const amountToFee = (userWeeklyOperations + amount) - freeAmount
+  const amountToFee = (userWeeklyOperations + amount) - freeAmount;
 
   return roundToCents(amountToFee * commissionValue);
 };
@@ -32,11 +32,6 @@ const calculateCashOutCommissionNatural = (amount, userWeeklyOperations) => {
 const calculateCashOutCommissionJuridical = (amount) => {
   const commissionFee = Math.max(0.003 * amount, 0.50);
   return roundToCents(commissionFee);
-};
-
-// Function to round to the nearest cent (upper bound)
-const roundToCents = (amount) => {
-  return Math.ceil(amount * 100) / 100;
 };
 
 function getWeekNumber(date) {
@@ -51,37 +46,36 @@ const processOperations = (operations) => {
   const userWeeklyOperations = {};
 
   return operations.map((operation) => {
-    const { date, user_id, user_type, type, operation: { amount } } = operation;
+    const {
+      date, user_id: id, user_type: userType, type, operation: { amount },
+    } = operation;
     const weekYear = `${new Date(date).getFullYear()}-W${getWeekNumber(new Date(date))}`;
 
     // Initialize user's weekly data if not already initialized
-    if (!userWeeklyOperations[user_id]) {
-      userWeeklyOperations[user_id] = {};
+    if (!userWeeklyOperations[id]) {
+      userWeeklyOperations[id] = {};
     }
-    if (!userWeeklyOperations[user_id][weekYear]) {
-      userWeeklyOperations[user_id][weekYear] = 0;
+    if (!userWeeklyOperations[id][weekYear]) {
+      userWeeklyOperations[id][weekYear] = 0;
     }
 
     let commissionFee = 0;
     if (type === 'cash_in') {
       commissionFee = calculateCashInCommission(amount);
     } else if (type === 'cash_out') {
-      if (user_type === 'natural') {
+      if (userType === 'natural') {
         // Pass the array of user's weekly operations to track free allowance
         commissionFee = calculateCashOutCommissionNatural(
           amount,
-          userWeeklyOperations[user_id][weekYear]
+          userWeeklyOperations[id][weekYear],
         );
 
         // Add current operation details to the weekly operations array
-        userWeeklyOperations[user_id][weekYear] += amount;
-      } else if (user_type === 'juridical') {
+        userWeeklyOperations[id][weekYear] += amount;
+      } else if (userType === 'juridical') {
         commissionFee = calculateCashOutCommissionJuridical(amount);
       }
-
     }
-
-    console.log('userWeeklyOperations >>', userWeeklyOperations)
 
     return commissionFee;
   });
@@ -105,8 +99,7 @@ try {
   const outputData = processOperations(inputData);
 
   // Output each commission fee on a new line
-  outputData.forEach(commission => console.log(commission));
-
+  outputData.forEach((commission) => console.log(commission));
 } catch (error) {
   console.error('Error reading or parsing the input file:', error);
   process.exit(1);
